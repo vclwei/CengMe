@@ -8,23 +8,68 @@
 
 #import "CMAppDelegate.h"
 
+#import "CMLoginViewController.h"
+#import "CMMainScreenViewController.h"
+
 @implementation CMAppDelegate
 
 @synthesize window = _window;
+@synthesize navigationController = _navigationController;
+@synthesize weibo = _weibo;
 
 - (void)dealloc
 {
     [_window release];
+    self.navigationController = nil;
+    self.weibo = nil;
     [super dealloc];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    WeiBo *weibo = [[WeiBo alloc] initWithAppKey:SinaWeiBoSDK_APPKey withAppSecret:SinaWeiBoSDK_APPSecret];
+    self.weibo = weibo;
+    [weibo release];
+    
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+    
     // Override point for customization after application launch.
+    UIViewController *firstViewController = nil;
+    if ([self.weibo isUserLoggedin]) {
+        CMMainScreenViewController *main = [[CMMainScreenViewController alloc] init];
+        firstViewController = main;
+    }
+    else{
+        CMLoginViewController *login = [[CMLoginViewController alloc] init];
+        firstViewController = login;
+    }
+    
+    self.navigationController = [[[UINavigationController alloc] initWithRootViewController:firstViewController] autorelease];
+    self.navigationController.navigationBar.hidden = YES;
+    [firstViewController release];
+    
+    [self.window addSubview:self.navigationController.view];
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;
+}
+
+//for ios version below 4.2
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+	if( [self.weibo handleOpenURL:url] )
+		return TRUE;
+	
+	return TRUE;
+}
+
+//for ios version is or above 4.2
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+	if( [self.weibo handleOpenURL:url] )
+		return TRUE;
+	
+	return TRUE;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

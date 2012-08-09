@@ -12,3 +12,14 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
 #endif
+
+#define SinaWeiBoSDK_APPKey @"3716515485"
+#define SinaWeiBoSDK_APPSecret @"9e9d6c5099b5802c8a0998d3afc3368c"
+
+#if !defined(SinaWeiBoSDK_APPKey)
+#error "You must define SinaWeiBoSDK_APPKey as your APP Key"
+#endif
+
+#if !defined(SinaWeiBoSDK_APPSecret)
+#error "You must define SinaWeiBoSDK_APPSecret as your APP Secret"
+#endif

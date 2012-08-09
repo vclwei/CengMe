@@ -8,8 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CMAppDelegate : UIResponder <UIApplicationDelegate>
+#import "WeiBo.h"
+
+@interface CMAppDelegate : UIResponder <UIApplicationDelegate>{
+    UINavigationController *_navigationController;
+    WeiBo *_weibo;
+}
 
 @property (strong, nonatomic) UIWindow *window;
+@property (nonatomic, retain) UINavigationController *navigationController;
+@property (nonatomic, retain) WeiBo *weibo;
 
 @end
